@@ -9,12 +9,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class ERPController extends AbstractController
 {
     /**
-     * @Route("/index")
+     * @Route("/home", name="app_home")
      *
      * @return Response
      */
-    public function index()
+    public function home()
     {
-        return new Response(200);
+        return $this->render('home/home.html.twig');
     }
 }
