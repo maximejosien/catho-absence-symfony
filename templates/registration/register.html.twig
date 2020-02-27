@@ -4,11 +4,13 @@
 
 {% block body %}
     {% include('navBar/navbar.html.twig') %}
-    <h1>Inscription</h1>
+    </br>
+    <h1 class="font-weight-bold">Inscription</h1>
 
     {{ form_start(registrationForm) }}
-    {{ form_row(registrationForm.email, {label_attr: {class: 'email-custom'} }) }}
-    {{ form_row(registrationForm.plainPassword) }}
+    {{ form_row(registrationForm.email, {'label': 'Email', 'attr': {'placeholder' : 'exemple: catho@gmail.com'} }) }}
+    {{ form_row(registrationForm.plainPassword.first) }}
+    {{ form_row(registrationForm.plainPassword.second) }}
     {{ form_row(registrationForm.agreeTerms) }}
 
     <input type="submit" title="S'inscrire" class="btn btn-primary"/>
