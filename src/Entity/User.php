@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -41,6 +43,18 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @var Collection|Absence[]
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Absence", mappedBy="user")
+     */
+    private $absences;
+
+    public function __construct()
+    {
+        $this->absences = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -119,10 +133,54 @@ class User implements UserInterface
         return $this->getEmail();
     }
 
-    /**
-     *
-     */
     public function eraseCredentials()
     {
+    }
+
+    /**
+     * @return Absence[]|Collection
+     */
+    public function getAbsences()
+    {
+        return $this->absences;
+    }
+
+    /**
+     * @param $absences
+     *
+     * @return $this
+     */
+    public function setAbsences($absences): self
+    {
+        $this->absences = $absences;
+
+        return $this;
+    }
+
+    /**
+     * @param Absence $absence
+     *
+     * @return $this
+     */
+    public function addAbsence(Absence $absence): self
+    {
+        if (!$this->absences->contains($absence)) {
+            $this->absences[] = $absence;
+            $absence->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Absence $absence
+     *
+     * @return $this
+     */
+    public function removeAbsence(Absence $absence): self
+    {
+        $this->removeAbsence($absence);
+
+        return $this;
     }
 }
