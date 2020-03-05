@@ -6,7 +6,7 @@
 
         <div class="col leftCol">
             <div class="content">
-                <h1 class="date">Friday<span>September 12th</span></h1>
+                <h1 class="date">{{ datetime_now.format('l.m.Y') }}</h1>
                 <div class="notes">
                     <p>
                         <input type="text" value="" placeholder="new note"/>
@@ -21,7 +21,7 @@
 
         <div class="col rightCol">
             <div class="content">
-                <h2 class="year">2013</h2>
+                <h2 class="year">{{ datetime_now.format('Y') }}</h2>
                 <ul class="months">
                     <li><a href="#" title="Jan" data-value="1">Jan</a></li>
                     <li><a href="#" title="Feb" data-value="2">Feb</a></li>
