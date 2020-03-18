@@ -1,0 +1,65 @@
+body {
+    background-color: rgba(240, 246, 231, 0.58);
+}
+
+.title {
+    color: red;
+}
+
+.calendar {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.calendar h1 {
+    color: #2f339d;
+}
+
+.days-row {
+    background-color: #2f339d;
+    height: 40px;
+    font-weight: bold;
+}
+
+.day-name {
+    margin: auto;
+    color: white;
+    font-size: 15px;
+}
+
+.weeks-row {
+}
+
+.day-block {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: auto;
+    height: 100px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.other-month {
+    background-color: rgba(234, 241, 224, 0.58);
+    color: rgba(148, 153, 142, 0.58);
+}
+
+.current-month {
+    background-color: white;
+}
+
+.day-block-left {
+    border-left: 1px solid rgba(78,82,75,0.58);
+    border-right: 1px solid rgba(78,82,75,0.58);
+    border-bottom: 1px solid rgba(78,82,75,0.58);
+}
+
+.day-block-center {
+    border-right: 1px solid rgba(78,82,75,0.58);
+    border-bottom: 1px solid rgba(78,82,75,0.58);
+}
+
+.day-block-right {
+    border-right: 1px solid rgba(78,82,75,0.58);
+    border-bottom: 1px solid rgba(78,82,75,0.58);
+}

@@ -7,9 +7,6 @@
 /public/bundles/
 /var/
 /vendor/
-/.idea/.gitignore
-/docker-compose.yaml
-
 ###< symfony/framework-bundle ###
 
 ###> intellij ###
