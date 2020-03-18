@@ -33,10 +33,15 @@ body {
 .day-block {
     padding-top: 10px;
     padding-bottom: 10px;
-    margin: auto;
-    height: 100px;
+    min-height: 100px;
     font-weight: bold;
     font-size: 20px;
+    width: calc(100% / 7);
+    word-wrap:break-word;
+}
+
+.date-number {
+    margin-left: 5px;
 }
 
 .other-month {
@@ -62,4 +67,21 @@ body {
 .day-block-right {
     border-right: 1px solid rgba(78,82,75,0.58);
     border-bottom: 1px solid rgba(78,82,75,0.58);
+}
+
+.absence-morning {
+    background-color: #76ff3b;
+    font-size: 12px;
+    text-align: center;
+    border-radius: 5px;
+    width: 90%;
+    margin: auto;
+}
+
+.absence-confirmed {
+    background-color: #7db4ff;
+    margin: auto;
+    font-size: 12px;
+    text-align: center;
+    width: 100%;
 }
