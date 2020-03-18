@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/calendar.css') }}" type="text/css"/>
+{% endblock %}
+
+{% block body %}
+
+    {% set dateDay = 'lol' %}
+
+    <script type="text/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+
+    <div class="container">
+        <div class="calendar">
+            <div class="row">
+                <h1 id="current-month" class="col-sm-11 title"><strong>{{ dateWithMonthAndYear }}</strong></h1>
+                <div class="col-sm-1">
+                    <a href="{{ relative_path(path('app_calendar', {'dateFormat' : monthBefore})) }}"><i id="last-month"
+                                                                                                         class="fas fa-arrow-left"></i></a>
+                    <a href="{{ relative_path(path('app_calendar', {'dateFormat' : monthAfter})) }}"><i id="last-month"
+                                                                                                        class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="row days-row">
+                <p class="day-name">Dimanche</p>
+                <p class="day-name">Lundi</p>
+                <p class="day-name">Mardi</p>
+                <p class="day-name">Mercredi</p>
+                <p class="day-name">Jeudi</p>
+                <p class="day-name">Vendredi</p>
+                <p class="day-name">Samedi</p>
+            </div>
+            {% for keyWeek, week in calendarOnMonth %}
+                <div class="row weeks-row">
+                    {% for keyDay, day in calendarOnMonth[keyWeek] %}
+                        {% set attributeWeekBlock = "col-sm day-block" %}
+
+                        {% if 0 == keyDay %}
+                            {% set attributeWeekBlock = attributeWeekBlock ~ " day-block-left" %}
+                        {% elseif 6 == keyDay %}
+                            {% set attributeWeekBlock = attributeWeekBlock ~ " day-block-right" %}
+                        {% else %}
+                            {% set attributeWeekBlock = attributeWeekBlock ~ " day-block-center" %}
+                        {% endif %}
+
+                        {% if false == calendarOnMonth[keyWeek][keyDay]['currentMonth'] %}
+                            {% set attributeWeekBlock = attributeWeekBlock ~ " other-month" %}
+                        {% else %}
+                            {% set attributeWeekBlock = attributeWeekBlock ~ " current-month" %}
+                        {% endif %}
+
+                        <div id="{{ calendarOnMonth[keyWeek][keyDay]['id'] }}" class="{{ attributeWeekBlock }}"
+                             data-toggle="modal" data-target="#exampleModal">
+                            {{ calendarOnMonth[keyWeek][keyDay]['date']|date("j") }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ form_start(formAbsence) }}
+                    <div class="my-custom-class-for-errors">
+                        {{ form_errors(formAbsence) }}
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            {{ form_row(formAbsence.dayAt, { 'value': dateDay }) }}
+                            {{ form_row(formAbsence.absenceReason) }}
+                        </div>
+                        0
+                    </div>
+                    {{ form_end(formAbsence) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/ffa27a3a7a.js" crossorigin="anonymous"></script>
+
+    <script>
+
+      $(".day-block").on('click', (event) => {
+        let x = parseInt(event.target.id / 7);
+        let y = event.target.id % 7;
+        let currentDate = new Date({{ calendarOnMonth | json_encode | raw }}[x][y]['date'].date);
+
+        {% set dateDay = 'value' %}
+        $(".modal-title").html(currentDate);
+      });
+    </script>
+
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}
