@@ -4,7 +4,20 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use MyCLabs\Enum\Enum;
 
+
+
+/**
+ * Class AbsenceType
+ * @method static self CONGE_PAYE()
+ * @method static self TRAVAIL()
+ * @method static self FERIE()
+ * @method static self MALADIE()
+ * @method static self RTT() */
+class AbsenceType extends Enum{
+
+}
 /**
  * @ORM\Entity
  */
@@ -33,12 +46,20 @@ class Absence
      */
     private $absenceReason;
 
+
+
     /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="absences")
      */
     private $user;
+    /**
+     * @var AbsenceType
+     *
+     * @ORM\OneToOne(
+     */
+    private $absenceType;
 
     /**
      * @var \DateTime
@@ -162,5 +183,24 @@ class Absence
     public function setUpdatedAt(\DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @return $this
+     */
+    public function getAbsenceType() :self{
+
+        return $this->absenceType;
+
+    }
+
+    /**
+     * @param AbsenceType $absenceType
+     * @return $this
+     */
+    public function setAbsenceType(AbsenceType $absenceType) : self{
+
+        $this->absenceType = $absenceType;
+
     }
 }
