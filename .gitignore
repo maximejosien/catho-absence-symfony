@@ -11,3 +11,9 @@
 /docker-compose.yaml
 
 ###< symfony/framework-bundle ###
+
+###> intellij ###
+
+.idea
+
+###< intellij ###
