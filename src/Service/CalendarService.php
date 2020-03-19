@@ -3,6 +3,9 @@
 namespace App\Service;
 
 use App\Constant\DateDaysName;
+use App\Entity\Absence;
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CalendarService implements CalendarServiceInterface
@@ -10,22 +13,28 @@ class CalendarService implements CalendarServiceInterface
     /** @var TranslatorInterface */
     private $translator;
 
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
     /**
      * @param TranslatorInterface $translator
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator, EntityManagerInterface $entityManager)
     {
         $this->translator = $translator;
+        $this->entityManager = $entityManager;
     }
 
     /**
      * @param \DateTime $dateMonth
+     * @param User $user
      *
      * @return array
      *
      * @throws \Exception
      */
-    public function computeCalendarOnMonth(\DateTime $dateMonth): array
+    public function computeCalendarOnMonth(\DateTime $dateMonth, User $user): array
     {
         $firstDateCalendar = $this->getFirstDateCalendar($dateMonth);
         $nextMonth = $this->getNextMonth($dateMonth);
@@ -40,7 +49,13 @@ class CalendarService implements CalendarServiceInterface
             for ($day = 0; $day < 7; $day++) {
                 $calendar[$week][$day] = [
                     'id' => $id,
-                    'date' => clone $dateCalendar,
+                    'date' => [
+                        'dateTime' => clone $dateCalendar,
+                        'day' => $dateCalendar->format('d'),
+                        'month' => $dateCalendar->format('m'),
+                        'year' => $dateCalendar->format('Y'),
+                    ],
+                    'absences' => $this->getAbsencesFromUserAndDateWithArrayFormat($user, $dateCalendar),
                     'currentMonth' => $this->isTheSameMonth($dateMonth, $dateCalendar)
                 ];
                 $id++;
@@ -123,5 +138,18 @@ class CalendarService implements CalendarServiceInterface
         ];
 
         return $this->translator->trans($month[$date->format("m") - 1], [], 'months') . ' ' . $date->format('Y');
+    }
+
+    /**
+     * @param User $user
+     * @param \DateTime $date
+     *
+     * @return array
+     */
+    private function getAbsencesFromUserAndDateWithArrayFormat(User $user, \DateTime $date): array
+    {
+        $absenceRepository = $this->entityManager->getRepository(Absence::class);
+
+        return $absenceRepository->getAbsenceByUserAndDate($user, $date);
     }
 }

@@ -17,10 +17,7 @@ class AbsenceFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('dayAt', DateTimeType::class, [
-                'widget' => 'single_text',
-//                'format' => 'dd-MM-yyyy'
-            ])
+            ->add('dayAt', DateTimeType::class)
             ->add('absenceReason', TextType::class)
             ->add('save', SubmitType::class);
     }
