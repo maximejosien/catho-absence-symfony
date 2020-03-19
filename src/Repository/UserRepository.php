@@ -20,6 +20,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
+     * @param array $email
+     * @param array|null $orderBy
+     * @return object|null
+     */
+    public function findOneBy(array $email, array $orderBy = null)
+    {
+        return parent::findOneBy($email, $orderBy);
+    }
+
+    /**
      * @return array
      */
 

@@ -18,4 +18,10 @@ class UserController extends AbstractController
         getRepository('UserRepository')->
         findAll();
  }
+
+ public function getUserByEmail(string $email){
+    return $users = $this.getDoctrine()->
+            getRepository('UserRepository')->
+            findOneBy($email);
+ }
 }
