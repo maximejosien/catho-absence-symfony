@@ -18,6 +18,7 @@ class AbsenceFormType extends AbstractType
     {
         $builder
             ->add('dayAt', DateTimeType::class)
+            ->add('halfDayType', TextType::class)
             ->add('absenceReason', TextType::class)
             ->add('save', SubmitType::class);
     }

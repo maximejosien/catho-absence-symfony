@@ -1,0 +1,24 @@
+framework:
+  workflows:
+    absence_state:
+      marking_store:
+        type: method
+        property: state
+      supports: App\Entity\Absence
+      initial_marking: none
+      places:
+        - none
+        - accepted
+        - refused
+      transitions:
+        accept:
+          from:
+            - none
+            - refused
+          to: accepted
+        refuse:
+          from:
+            - none
+            - accepted
+          to: refused
+

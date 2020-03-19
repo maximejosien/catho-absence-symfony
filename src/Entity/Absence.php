@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Constant\AbsenceStatesName;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +32,20 @@ class Absence
      * @ORM\Column(type="string", length=180)
      */
     private $absenceReason;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=180)
+     */
+    private $halfDayType;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=180, nullable=false)
+     */
+    private $state = AbsenceStatesName::NONE;
 
     /**
      * @var User|null
@@ -83,6 +98,46 @@ class Absence
     public function setAbsenceReason(?string $absenceReason): self
     {
         $this->absenceReason = $absenceReason;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getHalfDayType(): ?string
+    {
+        return $this->halfDayType;
+    }
+
+    /**
+     * @param string|null $halfDayType
+     *
+     * @return $this
+     */
+    public function setHalfDayType(?string $halfDayType): self
+    {
+        $this->halfDayType = $halfDayType;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param string|null $state
+     *
+     * @return $this
+     */
+    public function setState(?string $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }

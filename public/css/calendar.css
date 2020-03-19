@@ -69,13 +69,24 @@ body {
     border-bottom: 1px solid rgba(78,82,75,0.58);
 }
 
-.absence-morning {
-    background-color: #76ff3b;
+.absence {
     font-size: 12px;
     text-align: center;
     border-radius: 5px;
     width: 90%;
     margin: auto;
+}
+
+.absence-none {
+    background-color: #dde8e6;
+}
+
+.absence-accepted {
+    background-color: #76ff3b;
+}
+
+.absence-refused {
+    background-color: #ff4736;
 }
 
 .absence-confirmed {
