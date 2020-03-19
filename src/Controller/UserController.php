@@ -4,6 +4,8 @@
 namespace App\Controller;
 
 
+use App\Repository\UserRepository;
+
 class UserController extends AbstractController
 {
  /**
@@ -11,8 +13,9 @@ class UserController extends AbstractController
   *
   *
   */
-
  public function getAllUsers(){
-
+    return $users= $this.getDoctrine()->
+        getRepository('UserRepository')->
+        findAll();
  }
 }

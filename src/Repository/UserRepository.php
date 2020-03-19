@@ -20,6 +20,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
+     * @return array
+     */
+
+    public function findAll(){
+        return $this->findBy(array(), array('email' => 'ASC'));
+    }
+    /**
      * @param UserInterface $user
      * @param string $newEncodedPassword
      *
