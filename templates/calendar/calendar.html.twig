@@ -51,9 +51,19 @@
                              data-toggle="modal" data-target="#exampleModal">
                             <p class="date-number">{{ calendarOnMonth[keyWeek][keyDay]['date']['dateTime']|date("j") }}</p>
                             {% for absence in calendarOnMonth[keyWeek][keyDay]['absences'] %}
-                                <div class="col-sm-12 absence-morning">
-                                    <p>{{ absence.absenceReason }}</p>
-                                </div>
+                                {% if absence.state == 'NONE' %}
+                                    <div class="col-sm-12 absence absence-none">
+                                        <p>{{ absence.absenceReason }}</p>
+                                    </div>
+                                {% elseif absence.state == 'ACCEPTED' %}
+                                    <div class="col-sm-12 absence absence-accepted">
+                                        <p>{{ absence.absenceReason }}</p>
+                                    </div>
+                                {% elseif absence.state == 'REFUSED'%}
+                                    <div class="col-sm-12 absence absence-refused">
+                                        <p>{{ absence.absenceReason }}</p>
+                                    </div>
+                                {% endif %}
                             {% endfor %}
                         </div>
                     {% endfor %}
@@ -79,6 +89,7 @@
                     </div>
                     <div id="absence-form" class="container">
                         {{ form_row(formAbsence.dayAt) }}
+                        {{ form_row(formAbsence.halfDayType) }}
                         {{ form_row(formAbsence.absenceReason) }}
                     </div>
                 </div>
