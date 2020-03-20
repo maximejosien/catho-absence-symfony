@@ -53,15 +53,15 @@
                             {% for absence in calendarOnMonth[keyWeek][keyDay]['absences'] %}
                                 {% if absence.state == 'NONE' %}
                                     <div class="col-sm-12 absence absence-none">
-                                        <p>{{ absence.absenceReason|trans({'%name%': absence.absenceReason}, 'absence') }}</p>
+                                        <p>{{ absence.absenceReason|trans({'%name%': absence.absenceReason}, 'absence')}} / {{ absence.halfDayType|trans({'%name%': absence.halfDayType}, 'date')}}</p>
                                     </div>
                                 {% elseif absence.state == 'ACCEPTED' %}
                                     <div class="col-sm-12 absence absence-accepted">
-                                        <p>{{ absence.absenceReason|trans({'%name%': absence.absenceReason}, 'absence') }}</p>
+                                        <p>{{ absence.absenceReason|trans({'%name%': absence.absenceReason}, 'absence')}} / {{ absence.halfDayType|trans({'%name%': absence.halfDayType}, 'date')}}</p>
                                     </div>
                                 {% elseif absence.state == 'REFUSED'%}
                                     <div class="col-sm-12 absence absence-refused">
-                                        <p>{{ absence.absenceReason|trans({'%name%': absence.absenceReason}, 'absence') }}</p>
+                                        <p>{{ absence.absenceReason|trans({'%name%': absence.absenceReason}, 'absence')}} / {{ absence.halfDayType|trans({'%name%': absence.halfDayType}, 'date')}}</p>
                                     </div>
                                 {% endif %}
                             {% endfor %}
