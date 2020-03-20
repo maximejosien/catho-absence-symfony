@@ -50,6 +50,15 @@
                 <source>december</source>
                 <target>Decembre</target>
             </trans-unit>
+
+            <trans-unit id="MORNING">
+                <source>MORNING</source>
+                <target>Matin</target>
+            </trans-unit>
+            <trans-unit id="AFTERNOON">
+                <source>AFTERNOON</source>
+                <target>Après midi</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
