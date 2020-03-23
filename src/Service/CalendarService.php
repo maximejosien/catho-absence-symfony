@@ -137,7 +137,7 @@ class CalendarService implements CalendarServiceInterface
             'december'
         ];
 
-        return $this->translator->trans($month[$date->format("m") - 1], [], 'months') . ' ' . $date->format('Y');
+        return $this->translator->trans($month[$date->format("m") - 1], [], 'date') . ' ' . $date->format('Y');
     }
 
     /**
