@@ -14,6 +14,22 @@
                 <source>RTT_LEAVE</source>
                 <target>RTT</target>
             </trans-unit>
+            <trans-unit id="DATE_FORM">
+                <source>DATE_FORM</source>
+                <target>Date</target>
+            </trans-unit>
+            <trans-unit id="HALF_DAY_TYPE_FORM">
+                <source>HALF_DAY_TYPE_FORM</source>
+                <target>Demi-journée</target>
+            </trans-unit>
+            <trans-unit id="ABSENCE_REASON_FORM">
+                <source>ABSENCE_REASON_FORM</source>
+                <target>Raison</target>
+            </trans-unit>
+            <trans-unit id="SAVE_FORM">
+                <source>SAVE_FORM</source>
+                <target>Ajouter</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
