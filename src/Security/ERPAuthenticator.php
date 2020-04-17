@@ -147,6 +147,8 @@ class ERPAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
      */
     protected function getLoginUrl()
     {
-        return $this->urlGenerator->generate('app_login');
+        return $this->urlGenerator->generate('app_calendar', [
+            'dateFormat' => (new \DateTime())->format('F-Y')
+        ]);
     }
 }

@@ -2,12 +2,7 @@
 
 {% block title %}Log in!{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
-{% endblock %}
 {% block body %}
-    {% include('navBar/navbar.html.twig') %}
     <form class="form-signin" method="post">
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>

@@ -19,7 +19,9 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
          if ($this->getUser()) {
-             return $this->redirectToRoute('app_home');
+             return $this->redirectToRoute('app_calendar', [
+                 'dateFormat' => (new \DateTime())->format('F-Y')
+             ]);
          }
 
         $error = $authenticationUtils->getLastAuthenticationError();
