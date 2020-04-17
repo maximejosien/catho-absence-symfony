@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/users.css') }}">
+{% endblock %}
+
+{% block body %}
+    <h1>Liste des utilisateurs</h1>
+    <table class="table">
+        <thead>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Rôles</th>
+        <th>Actions</th>
+        </thead>
+        <tbody>
+        {# On boucle sur les utilisateurs #}
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    {% for role in user.roles %}
+                        {% if role == "ROLE_USER" %}
+                            Utilisateur
+                        {% elseif role == "ROLE_ EDITOR" %}
+                            Editeur
+                        {% elseif role == "ROLE_ADMIN" %}
+                            Administrateur
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td><a class="btn btn-primary">Modifier</a></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan=5>Il n'y a pas d'utilistaeur inscrit</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

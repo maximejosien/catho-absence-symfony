@@ -4,14 +4,6 @@ body {
     background-size: cover;
 
 }
-.bg-primary {
-    background-color: #123152!important;
-}
-.btn-primary {
-    color: #fff;
-    background-color: #123152;
-    border-color: #123152!important;
-}
 .form-signin {
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
     width: 100%;
