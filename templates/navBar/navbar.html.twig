@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="#">Catho</a>
+    <a class="navbar-brand" href="#">La Catho</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -8,17 +8,28 @@
         <ul class="navbar-nav">
             {% if app.user %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Calendrier</a>
+                    <a class="nav-link" href="{{ relative_path(path('app_home')) }}">Mon calendrier</a>
                 </li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                            Administration
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{ relative_path(path('app_admin_users')) }}">Utilisateurs</a>
+                            <a class="dropdown-item" href="{{ relative_path(path('app_admin_absences')) }}">Dernières absences</a>
+                        </div>
+                    </li>
+                {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/logout">Deconnexion</a>
+                    <a class="nav-link" href="{{ relative_path(path('app_logout')) }}">Deconnexion</a>
                 </li>
             {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/login">Connexion</a>
+                    <a class="nav-link" href="{{ relative_path(path('app_login')) }}">Connexion</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/register">Inscription</a>
+                    <a class="nav-link" href="{{ relative_path(path('app_register')) }}">Inscription</a>
                 </li>
             {% endif %}
         </ul>

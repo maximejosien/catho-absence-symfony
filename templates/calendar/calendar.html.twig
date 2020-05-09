@@ -8,67 +8,94 @@
 
     <script type="text/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
 
-    <div class="container">
-        <div class="calendar">
-            <div class="row">
-                <h1 id="current-month" class="col-sm-11 title"><strong>{{ dateWithMonthAndYear }}</strong></h1>
-                <div class="col-sm-1">
-                    <a href="{{ relative_path(path('app_calendar', {'dateFormat' : monthBefore})) }}"><i id="last-month"
-                                                                                                         class="fas fa-arrow-left"></i></a>
-                    <a href="{{ relative_path(path('app_calendar', {'dateFormat' : monthAfter})) }}"><i id="last-month"
-                                                                                                        class="fas fa-arrow-right"></i></a>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-1 calendar">
+                <div class="row">
+                    <h1 id="current-month" class="col-sm-11 title"><strong>{{ dateWithMonthAndYear }}</strong></h1>
+                    <div class="col-sm-1">
+                        <a href="{{ relative_path(path('app_calendar', {'dateFormat' : monthBefore})) }}"><i
+                                    id="last-month"
+                                    class="fas fa-arrow-left"></i></a>
+                        <a href="{{ relative_path(path('app_calendar', {'dateFormat' : monthAfter})) }}"><i
+                                    id="last-month"
+                                    class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
+                <div class="row days-row">
+                    <p class="day-name">Dimanche</p>
+                    <p class="day-name">Lundi</p>
+                    <p class="day-name">Mardi</p>
+                    <p class="day-name">Mercredi</p>
+                    <p class="day-name">Jeudi</p>
+                    <p class="day-name">Vendredi</p>
+                    <p class="day-name">Samedi</p>
+                </div>
+                {% for keyWeek, week in calendarOnMonth %}
+                    <div class="row weeks-row">
+                        {% for keyDay, day in calendarOnMonth[keyWeek] %}
+                            {% set attributeWeekBlock = "day-block" %}
+
+                            {% if 0 == keyDay %}
+                                {% set attributeWeekBlock = attributeWeekBlock ~ " day-block-left" %}
+                            {% elseif 6 == keyDay %}
+                                {% set attributeWeekBlock = attributeWeekBlock ~ " day-block-right" %}
+                            {% else %}
+                                {% set attributeWeekBlock = attributeWeekBlock ~ " day-block-center" %}
+                            {% endif %}
+
+                            {% if false == calendarOnMonth[keyWeek][keyDay]['currentMonth'] %}
+                                {% set attributeWeekBlock = attributeWeekBlock ~ " other-month" %}
+                            {% else %}
+                                {% set attributeWeekBlock = attributeWeekBlock ~ " current-month" %}
+                            {% endif %}
+
+                            <div id="{{ calendarOnMonth[keyWeek][keyDay]['id'] }}" class="{{ attributeWeekBlock }}"
+                                 data-toggle="modal" data-target="#exampleModal">
+                                <p class="date-number">{{ calendarOnMonth[keyWeek][keyDay]['date']['dateTime']|date("j") }}</p>
+                                {% for absence in calendarOnMonth[keyWeek][keyDay]['absences'] %}
+                                    {% if absence.state == 'NONE' %}
+                                        <div class="col-sm-12 absence absence-none">
+                                            <p>{{ absence.absenceReason|trans({'%name%': absence.absenceReason}, 'absence') }}
+                                                / {{ absence.halfDayType|trans({'%name%': absence.halfDayType}, 'date') }}</p>
+                                        </div>
+                                    {% elseif absence.state == 'ACCEPTED' %}
+                                        <div class="col-sm-12 absence absence-accepted">
+                                            <p>{{ absence.absenceReason|trans({'%name%': absence.absenceReason}, 'absence') }}
+                                                / {{ absence.halfDayType|trans({'%name%': absence.halfDayType}, 'date') }}</p>
+                                        </div>
+                                    {% elseif absence.state == 'REFUSED' %}
+                                        <div class="col-sm-12 absence absence-refused">
+                                            <p>{{ absence.absenceReason|trans({'%name%': absence.absenceReason}, 'absence') }}
+                                                / {{ absence.halfDayType|trans({'%name%': absence.halfDayType}, 'date') }}</p>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
             </div>
-            <div class="row days-row">
-                <p class="day-name">Dimanche</p>
-                <p class="day-name">Lundi</p>
-                <p class="day-name">Mardi</p>
-                <p class="day-name">Mercredi</p>
-                <p class="day-name">Jeudi</p>
-                <p class="day-name">Vendredi</p>
-                <p class="day-name">Samedi</p>
-            </div>
-            {% for keyWeek, week in calendarOnMonth %}
-                <div class="row weeks-row">
-                    {% for keyDay, day in calendarOnMonth[keyWeek] %}
-                        {% set attributeWeekBlock = "day-block" %}
 
-                        {% if 0 == keyDay %}
-                            {% set attributeWeekBlock = attributeWeekBlock ~ " day-block-left" %}
-                        {% elseif 6 == keyDay %}
-                            {% set attributeWeekBlock = attributeWeekBlock ~ " day-block-right" %}
-                        {% else %}
-                            {% set attributeWeekBlock = attributeWeekBlock ~ " day-block-center" %}
+            <div class="col-sm-4">
+                <div class="container infos">
+                    <h3 class="infos-name">{{ app.user.firstName }} {{ app.user.lastName }}</h3>
+                    <br>
+                    <p><strong>Nombre de congés restant : </strong>{{ app.user.numberCurrentAbsence }}</p>
+                    <hr>
+                    {% for absenceHistorical in absencesHistorical %}
+                        {% if absenceHistorical.absenceState == 'ACCEPTED' %}
+                            <p class="infos-absence-historical"><strong>{{ absenceHistorical.realizedBy.firstName }} {{ absenceHistorical.realizedBy.lastName }}</strong>
+                                à accepté votre demande de congé du {{ absenceHistorical.absence.dayAt|date("d/m/Y") }}
+                                ({{ absenceHistorical.absence.halfDayType|trans({'%name%': absenceHistorical.absence.halfDayType}, 'date') }})</p>
+                        {% elseif absenceHistorical.absenceState == 'REFUSED' %}
+                            <p class="infos-absence-historical"><strong>{{ absenceHistorical.realizedBy.firstName }} {{ absenceHistorical.realizedBy.lastName }}</strong>
+                                à refusé votre demande de congé du {{ absenceHistorical.absence.dayAt|date("d/m/Y") }}
+                                ({{ absenceHistorical.absence.halfDayType|trans({'%name%': absenceHistorical.absence.halfDayType}, 'date') }})</p>
                         {% endif %}
-
-                        {% if false == calendarOnMonth[keyWeek][keyDay]['currentMonth'] %}
-                            {% set attributeWeekBlock = attributeWeekBlock ~ " other-month" %}
-                        {% else %}
-                            {% set attributeWeekBlock = attributeWeekBlock ~ " current-month" %}
-                        {% endif %}
-
-                        <div id="{{ calendarOnMonth[keyWeek][keyDay]['id'] }}" class="{{ attributeWeekBlock }}"
-                             data-toggle="modal" data-target="#exampleModal">
-                            <p class="date-number">{{ calendarOnMonth[keyWeek][keyDay]['date']['dateTime']|date("j") }}</p>
-                            {% for absence in calendarOnMonth[keyWeek][keyDay]['absences'] %}
-                                {% if absence.state == 'NONE' %}
-                                    <div class="col-sm-12 absence absence-none">
-                                        <p>{{ absence.absenceReason|trans({'%name%': absence.absenceReason}, 'absence')}} / {{ absence.halfDayType|trans({'%name%': absence.halfDayType}, 'date')}}</p>
-                                    </div>
-                                {% elseif absence.state == 'ACCEPTED' %}
-                                    <div class="col-sm-12 absence absence-accepted">
-                                        <p>{{ absence.absenceReason|trans({'%name%': absence.absenceReason}, 'absence')}} / {{ absence.halfDayType|trans({'%name%': absence.halfDayType}, 'date')}}</p>
-                                    </div>
-                                {% elseif absence.state == 'REFUSED'%}
-                                    <div class="col-sm-12 absence absence-refused">
-                                        <p>{{ absence.absenceReason|trans({'%name%': absence.absenceReason}, 'absence')}} / {{ absence.halfDayType|trans({'%name%': absence.halfDayType}, 'date')}}</p>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
                     {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
         </div>
     </div>
 

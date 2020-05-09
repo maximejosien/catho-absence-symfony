@@ -1,0 +1,15 @@
+.accept-absence {
+    background-color: #76ff3b !important;
+    border-color: #76ff3b !important;
+    color: #fff !important;
+}
+
+.refuse-absence {
+    color: #fff !important;
+    background-color: #ff4736 !important;
+    border-color: #ff4736 !important;
+}
+
+.absences {
+    margin-top: 30px;
+}

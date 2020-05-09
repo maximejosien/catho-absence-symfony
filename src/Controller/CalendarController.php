@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Absence;
 use App\Entity\User;
 use App\Form\AbsenceFormType;
+use App\Service\AbsenceHistoricalInterface;
+use App\Service\AbsenceHistoricalServiceInterface;
 use App\Service\CalendarServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,12 +20,19 @@ class CalendarController extends AbstractController
     /** @var CalendarServiceInterface */
     private $calendarService;
 
+    /** @var AbsenceHistoricalServiceInterface */
+    private $absenceHistoricalService;
+
     /**
      * @param CalendarServiceInterface $calendarService
+     * @param AbsenceHistoricalServiceInterface $absenceHistoricalService
      */
-    public function __construct(CalendarServiceInterface $calendarService)
-    {
+    public function __construct(
+        CalendarServiceInterface $calendarService,
+        AbsenceHistoricalServiceInterface $absenceHistoricalService
+    ) {
         $this->calendarService = $calendarService;
+        $this->absenceHistoricalService = $absenceHistoricalService;
     }
 
     /**
@@ -68,7 +77,8 @@ class CalendarController extends AbstractController
             'dateWithMonthAndYear' => $this->calendarService->getDateWithMonthAndYear($dateMonth),
             'monthBefore' => (clone $dateMonth)->sub(new \DateInterval('P1M'))->format('F-Y'),
             'monthAfter' => (clone $dateMonth)->add(new \DateInterval('P1M'))->format('F-Y'),
-            'formAbsence' => $form->createView()
+            'formAbsence' => $form->createView(),
+            'absencesHistorical' => $this->absenceHistoricalService->getAbsenceHistoricalFromUser($user),
         ]);
     }
 }

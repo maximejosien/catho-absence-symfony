@@ -5,20 +5,20 @@ framework:
         type: method
         property: state
       supports: App\Entity\Absence
-      initial_marking: none
+      initial_marking: NONE
       places:
-        - none
-        - accepted
-        - refused
+        - NONE
+        - ACCEPTED
+        - REFUSED
       transitions:
         accept:
           from:
-            - none
-            - refused
-          to: accepted
+            - NONE
+            - REFUSED
+          to: ACCEPTED
         refuse:
           from:
-            - none
-            - accepted
-          to: refused
+            - NONE
+            - ACCEPTED
+          to: REFUSED
 
