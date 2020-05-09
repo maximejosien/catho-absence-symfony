@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/absences.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container absences">
+        <h1>Dernières absences</h1>
+        <table class="table">
+            <thead>
+            <th>ID</th>
+            <th>Demandé par</th>
+            <th>Date</th>
+            <th>Raison</th>
+            <th>Status</th>
+            <th>Actions</th>
+            </thead>
+            <tbody>
+            {# On boucle sur les utilisateurs #}
+            {% for absence in absences %}
+                <tr>
+                    <td>{{ absence.id }}</td>
+                    <td>{{ absence.user.email }}</td>
+                    <td>{{ absence.dayAt|date("d/m/Y") }}
+                        ({{ absence.halfDayType|trans({'%name%': absence.halfDayType}, 'date') }})
+                    </td>
+                    <td>{{ absence.absenceReason|trans({'%name%': absence.absenceReason}, 'absence') }}</td>
+                    <td>{{ absence.state }}</td>
+                    <td>
+                        <a href="{{ relative_path(path('app_admin_absences_accept', {'absenceId': absence.id})) }}" class="btn btn-primary accept-absence">Accepter</a>
+                        <a href="{{ relative_path(path('app_admin_absences_refuse', {'absenceId': absence.id})) }}" class="btn btn-primary refuse-absence">Refuser</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan=5>Il n'y a pas d'absence courante</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

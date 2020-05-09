@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ *
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface
@@ -50,6 +51,27 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Absence", mappedBy="user")
      */
     private $absences;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string")
+     */
+    private $firstName;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string")
+     */
+    private $lastName;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(type="float")
+     */
+    private $numberCurrentAbsence = 25;
 
     public function __construct()
     {
@@ -180,6 +202,66 @@ class User implements UserInterface
     public function removeAbsence(Absence $absence): self
     {
         $this->removeAbsence($absence);
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param string|null $firstName
+     *
+     * @return $this
+     */
+    public function setFirstName(?string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @param string|null $lastName
+     *
+     * @return $this
+     */
+    public function setLastName(?string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getNumberCurrentAbsence(): float
+    {
+        return $this->numberCurrentAbsence;
+    }
+
+    /**
+     * @param float $numberCurrentAbsence
+     *
+     * @return $this
+     */
+    public function setNumberCurrentAbsence(float $numberCurrentAbsence): self
+    {
+        $this->numberCurrentAbsence = $numberCurrentAbsence;
 
         return $this;
     }

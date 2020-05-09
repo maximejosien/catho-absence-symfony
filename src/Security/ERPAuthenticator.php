@@ -73,6 +73,7 @@ class ERPAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
             'password' => $request->request->get('password'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
+
         $request->getSession()->set(
             Security::LAST_USERNAME,
             $credentials['email']
@@ -90,6 +91,7 @@ class ERPAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
+
         if (!$this->csrfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException();
         }
@@ -147,8 +149,6 @@ class ERPAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
      */
     protected function getLoginUrl()
     {
-        return $this->urlGenerator->generate('app_calendar', [
-            'dateFormat' => (new \DateTime())->format('F-Y')
-        ]);
+        return $this->urlGenerator->generate('app_home');
     }
 }
