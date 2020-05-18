@@ -28,7 +28,7 @@
                         ({{ absence.halfDayType|trans({'%name%': absence.halfDayType}, 'date') }})
                     </td>
                     <td>{{ absence.absenceReason|trans({'%name%': absence.absenceReason}, 'absence') }}</td>
-                    <td>{{ absence.state }}</td>
+                    <td>{{ absence.state|trans({'%name%': absence.state}, 'absence') }}</td>
                     <td>
                         <a href="{{ relative_path(path('app_admin_absences_accept', {'absenceId': absence.id})) }}" class="btn btn-primary accept-absence">Accepter</a>
                         <a href="{{ relative_path(path('app_admin_absences_refuse', {'absenceId': absence.id})) }}" class="btn btn-primary refuse-absence">Refuser</a>

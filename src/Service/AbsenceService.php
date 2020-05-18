@@ -30,25 +30,31 @@ class AbsenceService implements AbsenceServiceInterface
     /** @var Security */
     private $security;
 
+    /** @var UserServiceInterface */
+    private $userService;
+
     /**
      * @param TranslatorInterface $translator
      * @param AbsenceRepository $absenceRepository
      * @param Registry $workflowRegistry
      * @param EntityManagerInterface $entityManager
      * @param Security $security
+     * @param UserServiceInterface $userService
      */
     public function __construct(
         TranslatorInterface $translator,
         AbsenceRepository $absenceRepository,
         Registry $workflowRegistry,
         EntityManagerInterface $entityManager,
-        Security $security
+        Security $security,
+        UserServiceInterface $userService
     ) {
         $this->translator = $translator;
         $this->absenceRepository = $absenceRepository;
         $this->workflowRegistry = $workflowRegistry;
         $this->entityManager = $entityManager;
         $this->security = $security;
+        $this->userService = $userService;
     }
 
     /**
@@ -129,14 +135,6 @@ class AbsenceService implements AbsenceServiceInterface
             $workflow->apply($absence, $transition);
         }
 
-        $user = $absence->getUser();
-
-        if (AbsenceTransitionsName::ACCEPT === $transition) {
-            $user->setNumberCurrentAbsence($user->getNumberCurrentAbsence() - 0.5);
-        } elseif (AbsenceTransitionsName::REFUSE === $transition) {
-            $user->setNumberCurrentAbsence($user->getNumberCurrentAbsence() + 0.5);
-        }
-
         $absenceHistorical = new AbsenceHistorical();
 
         $absenceHistorical->setAbsenceState($absence->getState());
@@ -149,5 +147,37 @@ class AbsenceService implements AbsenceServiceInterface
         $this->entityManager->flush();
 
         return true;
+    }
+
+    /**
+     * @param Absence $absence
+     */
+    public function computeNumberOfHolidayWithAbsenceWhenAccepted(Absence $absence): void
+    {
+        if (in_array($absence->getAbsenceReason(), $this->getAbsenceReasonsRequireNumberOfHoliday())) {
+            $this->userService->removeNumberOfHoliday($absence->getUser(), 0.5);
+        }
+    }
+
+    /**
+     * @param Absence $absence
+     */
+    public function computeNumberOfHolidayWithAbsenceWhenRefused(Absence $absence): void
+    {
+        if (in_array($absence->getAbsenceReason(), $this->getAbsenceReasonsRequireNumberOfHoliday())) {
+            $this->userService->addNumberOfHoliday($absence->getUser(), 0.5);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    private function getAbsenceReasonsRequireNumberOfHoliday(): array
+    {
+        return [
+            AbsenceReasonsName::PAID_LEAVE,
+            AbsenceReasonsName::RTT_LEAVE,
+            AbsenceReasonsName::SICK_LEAVE,
+        ];
     }
 }

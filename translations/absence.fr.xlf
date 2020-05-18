@@ -22,6 +22,10 @@
                 <source>HALF_DAY_TYPE_FORM</source>
                 <target>Demi-journée</target>
             </trans-unit>
+            <trans-unit id="UNPAID_LEAVE">
+                <source>UNPAID_LEAVE</source>
+                <target>Congé sans solde</target>
+            </trans-unit>
             <trans-unit id="ABSENCE_REASON_FORM">
                 <source>ABSENCE_REASON_FORM</source>
                 <target>Raison</target>
@@ -29,6 +33,18 @@
             <trans-unit id="SAVE_FORM">
                 <source>SAVE_FORM</source>
                 <target>Ajouter</target>
+            </trans-unit>
+            <trans-unit id="NONE">
+                <source>NONE</source>
+                <target>Non renseigné</target>
+            </trans-unit>
+            <trans-unit id="ACCEPTED">
+                <source>ACCEPTED</source>
+                <target>Accepté</target>
+            </trans-unit>
+            <trans-unit id="REFUSED">
+                <source>REFUSED</source>
+                <target>Refusé</target>
             </trans-unit>
         </body>
     </file>

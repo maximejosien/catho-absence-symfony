@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Constant\AbsenceHalfDayName;
+use App\Entity\Absence;
 
 interface AbsenceServiceInterface
 {
@@ -29,4 +29,14 @@ interface AbsenceServiceInterface
      * @return bool
      */
     public function refuseAbsenceWithId(string $absenceId): bool;
+
+    /**
+     * @param Absence $absence
+     */
+    public function computeNumberOfHolidayWithAbsenceWhenAccepted(Absence $absence): void;
+
+    /**
+     * @param Absence $absence
+     */
+    public function computeNumberOfHolidayWithAbsenceWhenRefused(Absence $absence): void;
 }
