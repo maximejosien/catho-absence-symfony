@@ -2,40 +2,73 @@
 
 namespace App\Controller;
 
+use App\Entity\Absence;
+use App\Entity\User;
+use App\Form\AbsenceFormType;
+use App\Service\AbsenceHistoricalServiceInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use App\Service\CalendarServiceInterface;
+use App\Controller\CalendarController;
+use Symfony\Component\Security\Core\Security;
 
 class PdfGenerator extends AbstractController
 {
+    /** @var CalendarServiceInterface */
+    private $calendarService;
+
+    /** @var AbsenceHistoricalServiceInterface */
+    private $absenceHistoricalService;
 
     /**
-     * @Route("/pdf", name="app_pdf")
+     * @param CalendarServiceInterface $calendarService
+     * @param AbsenceHistoricalServiceInterface $absenceHistoricalService
      */
-    public function generate_pdf()
+    public function __construct(
+        CalendarServiceInterface $calendarService,
+        AbsenceHistoricalServiceInterface $absenceHistoricalService
+    )
     {
-        // Configure Dompdf according to your needs
+        $this->calendarService = $calendarService;
+        $this->absenceHistoricalService = $absenceHistoricalService;
+    }
+
+    /**
+     * @Route("pdf/{dateFormat}", name="app_pdf")
+     */
+    public function generate_pdf(Security $security, Request $request)
+    {
+
+        $absence = new Absence();
+
+        $form = $this->createForm(AbsenceFormType::class, $absence);
+        $form->handleRequest($request);
+
+        $user = $security->getUser();
+
+        if ($user instanceof User) {
+            $absence->setUser($user);
+        }
+
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
-
-        // Instantiate Dompdf with our options
         $dompdf = new Dompdf($pdfOptions);
 
-        // Retrieve the HTML generated in our twig file
-        $html = $this->renderView('calendar/calendar.html.twig', [
-            'title' => "Votre Export"
+        $html = $this->renderView('calendar/exportCalendar.html.twig', [
+            'absencesHistorical' => $this->absenceHistoricalService->getAbsenceHistoricalFromUser($user),
         ]);
-
-        // Load HTML to Dompdf
         $dompdf->loadHtml($html);
-
-        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
         $dompdf->setPaper('A4', 'portrait');
-
-        // Render the HTML as PDF
         $dompdf->render();
 
-        // Output the generated PDF to Browser (force download)
-        $dompdf->stream("mypdf.pdf", [
+        $dompdf->stream("export.pdf", [
             "Attachment" => true
         ]);
+
     }
+
 }

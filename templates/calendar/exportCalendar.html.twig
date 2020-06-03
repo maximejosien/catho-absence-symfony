@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/calendar.css') }}" type="text/css"/>
+{% endblock %}
+
+{% block body %}
+            <div class="col-sm-4">
+                <div class="container infos">
+                    <h3 class="infos-name">{{ app.user.firstName }} {{ app.user.lastName }}</h3>
+                    <br>
+                    <p><strong>Nombre de congés restant : </strong>{{ app.user.numberCurrentAbsence }}</p>
+                    <hr>
+                    {% for absenceHistorical in absencesHistorical %}
+                        {% if absenceHistorical.absenceState == 'ACCEPTED' %}
+                            <p class="infos-absence-historical"><strong>{{ absenceHistorical.realizedBy.firstName }} {{ absenceHistorical.realizedBy.lastName }}</strong>
+                                à accepté votre demande de congé du {{ absenceHistorical.absence.dayAt|date("d/m/Y") }}
+                                ({{ absenceHistorical.absence.halfDayType|trans({'%name%': absenceHistorical.absence.halfDayType}, 'date') }})</p>
+                        {% elseif absenceHistorical.absenceState == 'REFUSED' %}
+                            <p class="infos-absence-historical"><strong>{{ absenceHistorical.realizedBy.firstName }} {{ absenceHistorical.realizedBy.lastName }}</strong>
+                                à refusé votre demande de congé du {{ absenceHistorical.absence.dayAt|date("d/m/Y") }}
+                                ({{ absenceHistorical.absence.halfDayType|trans({'%name%': absenceHistorical.absence.halfDayType}, 'date') }})</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

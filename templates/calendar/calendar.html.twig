@@ -85,20 +85,25 @@
                     <hr>
                     {% for absenceHistorical in absencesHistorical %}
                         {% if absenceHistorical.absenceState == 'ACCEPTED' %}
-                            <p class="infos-absence-historical"><strong>{{ absenceHistorical.realizedBy.firstName }} {{ absenceHistorical.realizedBy.lastName }}</strong>
+                            <p class="infos-absence-historical">
+                                <strong>{{ absenceHistorical.realizedBy.firstName }} {{ absenceHistorical.realizedBy.lastName }}</strong>
                                 à accepté votre demande de congé du {{ absenceHistorical.absence.dayAt|date("d/m/Y") }}
-                                ({{ absenceHistorical.absence.halfDayType|trans({'%name%': absenceHistorical.absence.halfDayType}, 'date') }})</p>
+                                ({{ absenceHistorical.absence.halfDayType|trans({'%name%': absenceHistorical.absence.halfDayType}, 'date') }}
+                                )</p>
                         {% elseif absenceHistorical.absenceState == 'REFUSED' %}
-                            <p class="infos-absence-historical"><strong>{{ absenceHistorical.realizedBy.firstName }} {{ absenceHistorical.realizedBy.lastName }}</strong>
+                            <p class="infos-absence-historical">
+                                <strong>{{ absenceHistorical.realizedBy.firstName }} {{ absenceHistorical.realizedBy.lastName }}</strong>
                                 à refusé votre demande de congé du {{ absenceHistorical.absence.dayAt|date("d/m/Y") }}
-                                ({{ absenceHistorical.absence.halfDayType|trans({'%name%': absenceHistorical.absence.halfDayType}, 'date') }})</p>
+                                ({{ absenceHistorical.absence.halfDayType|trans({'%name%': absenceHistorical.absence.halfDayType}, 'date') }}
+                                )</p>
                         {% endif %}
                     {% endfor %}
+                    <a href="{{ path('app_pdf', {'dateFormat':monthBefore}) }}" class="btn btn-primary">Exporter</a>
+
                 </div>
             </div>
         </div>
     </div>
-
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -132,15 +137,15 @@
 
     <script>
 
-      $(".day-block").on('click', (event) => {
-        let x = parseInt(event.currentTarget.id / 7);
-        let y = event.currentTarget.id % 7;
-        let currentDate = {{ calendarOnMonth | json_encode | raw }}[x][y]['date'];
+        $(".day-block").on('click', (event) => {
+            let x = parseInt(event.currentTarget.id / 7);
+            let y = event.currentTarget.id % 7;
+            let currentDate = {{ calendarOnMonth | json_encode | raw }}[x][y]['date'];
 
-        $("#absence_form_dayAt_date_day").val(parseInt(currentDate['day']));
-        $("#absence_form_dayAt_date_month").val(parseInt(currentDate['month']));
-        $("#absence_form_dayAt_date_year").val(parseInt(currentDate['year']));
-      });
+            $("#absence_form_dayAt_date_day").val(parseInt(currentDate['day']));
+            $("#absence_form_dayAt_date_month").val(parseInt(currentDate['month']));
+            $("#absence_form_dayAt_date_year").val(parseInt(currentDate['year']));
+        });
     </script>
 
 {% endblock %}
