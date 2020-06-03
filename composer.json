@@ -5,6 +5,7 @@
         "php": "^7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "dompdf/dompdf": "^0.8.5",
         "gedmo/doctrine-extensions": "^2.4",
         "myclabs/php-enum": "^1.7",
         "sensio/framework-extra-bundle": "^5.5",
