@@ -6,14 +6,12 @@ use App\Entity\Absence;
 use App\Entity\User;
 use App\Form\AbsenceFormType;
 use App\Service\AbsenceHistoricalServiceInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Service\CalendarServiceInterface;
-use App\Controller\CalendarController;
 use Symfony\Component\Security\Core\Security;
 
 class PdfGenerator extends AbstractController
@@ -38,11 +36,13 @@ class PdfGenerator extends AbstractController
     }
 
     /**
+     * @param Security $security
+     * @param Request $request
+     *
      * @Route("pdf/{dateFormat}", name="app_pdf")
      */
-    public function generate_pdf(Security $security, Request $request)
+    public function generatePdf(Security $security, Request $request)
     {
-
         $absence = new Absence();
 
         $form = $this->createForm(AbsenceFormType::class, $absence);
@@ -68,7 +68,5 @@ class PdfGenerator extends AbstractController
         $dompdf->stream("export.pdf", [
             "Attachment" => true
         ]);
-
     }
-
 }
