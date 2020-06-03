@@ -28,12 +28,15 @@ class EditUserType extends AbstractType
                     ])
                 ],
                 'required' => true,
+                'label' => 'Adresse email',
             ])
             ->add('first_name',TextType::class, [
                 'required' => false,
+                'label' => 'Nom',
             ])
             ->add('last_name', TextType::class, [
                 'required' => false,
+                'label' => 'Prénom',
             ])
             ->add('roles', ChoiceType::class, [
                 'choices' => [
