@@ -28,7 +28,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/admin/absences/{id}", name="app_admin_absences_edit")
+     * @Route("/admin/users/{id}", name="app_admin_users_edit")
      *
      * @Security("is_granted('ROLE_ADMIN')")
      *
