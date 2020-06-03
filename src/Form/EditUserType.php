@@ -28,7 +28,7 @@ class EditUserType extends AbstractType
                     ])
                 ],
                 'required' => true,
-                'label' => 'Adresse email',
+                'label' => 'Adresse Email',
             ])
             ->add('first_name',TextType::class, [
                 'required' => false,
